@@ -1,3 +1,8 @@
+// Name     : 抖音视频分享
+// Version  : 0.0.1
+// Author   : LisonFan
+// Home     : https://github.com/LisonFan/JSBox-Script/
+
 main()
 
 function main() {
