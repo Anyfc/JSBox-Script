@@ -1,5 +1,5 @@
 /**
- * Version          : 0.0.1
+ * Version          : 0.0.2
  * Author           : LisonFan
  * Home             : https://github.com/LisonFan/JSBox-Script
  * Support List     : 微博视频、秒拍
@@ -67,7 +67,7 @@ function resolveVideoDownloadURL(url) {
                     var regx = /(src=')(.)[^\']+/g
                     var video_url_regx = regx.exec(data)
                     if (video_url_regx) {
-                        var video_url = video_url_regx[0].split("\"")[2]
+                        var video_url = video_url_regx[0].split("\'")[1]
                         if (video_url.indexOf("http://") > -1 || video_url.indexOf("https://") > -1) {
                             downloadVideo(video_url)
                         } else {
