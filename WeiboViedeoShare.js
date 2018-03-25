@@ -64,8 +64,25 @@ function resolveVideoDownloadURL(url) {
                 var data = resp.data
                 if (data) {
                     var regx = /(src=')(.)[^\']+/g
-                    var video_url = regx.exec(data)[0].split("\'")[1]
-                    downloadVideo(video_url)
+                    var video_url_regx = regx.exec(data)
+                    if (video_url_regx) {
+                        var video_url = video_url_regx[0].split("\"")[2]
+                        if (video_url.indexOf("http://" || "https://") > -1) {
+                            downloadVideo(video_url)
+                        } else {
+                            $ui.alert({
+                                title: "错误",
+                                message: "找不到视频链接",
+                            })
+                            return
+                        }
+                    } else {
+                        $ui.alert({
+                            title: "错误",
+                            message: "找不到视频链接",
+                        })
+                        return
+                    }
                 } else {
                     $ui.alert({
                         title: "错误",
@@ -85,8 +102,25 @@ function resolveVideoDownloadURL(url) {
                 var data = resp.data
                 if (data) {
                     var regx = /(videoSrc\"\:)(.)[^\"]+/g
-                    var video_url = regx.exec(data)[0].split("\"")[2]
-                    downloadVideo(video_url)
+                    var video_url_regx = regx.exec(data)
+                    if (video_url_regx) {
+                        var video_url = video_url_regx[0].split("\"")[2]
+                        if (video_url.indexOf("http://" || "https://") > -1) {
+                            downloadVideo(video_url)
+                        } else {
+                            $ui.alert({
+                                title: "错误",
+                                message: "找不到视频链接",
+                            })
+                            return
+                        }
+                    } else {
+                        $ui.alert({
+                            title: "错误",
+                            message: "找不到视频链接",
+                        })
+                        return
+                    }
                 } else {
                     $ui.alert({
                         title: "错误",
@@ -106,13 +140,31 @@ function resolveVideoDownloadURL(url) {
                 var data = resp.data
                 if (data) {
                     var regx = /(stream_url_hd)(.)+/g
-                    var video_url = regx.exec(data)[0].split("\"")[2]
-                    downloadVideo(video_url)
+                    var video_url_regx = regx.exec(data)
+                    if (video_url_regx) {
+                        var video_url = video_url_regx[0].split("\"")[2]
+                        if (video_url.indexOf("http://" || "https://") > -1) {
+                            downloadVideo(video_url)
+                        } else {
+                            $ui.alert({
+                                title: "错误",
+                                message: "找不到视频链接",
+                            })
+                            return
+                        }
+                    } else {
+                        $ui.alert({
+                            title: "错误",
+                            message: "找不到视频链接",
+                        })
+                        return
+                    }                    
                 } else {
                     $ui.alert({
                         title: "错误",
                         message: resp,
                     })
+                    return
                 }
             }
         })
