@@ -1,5 +1,5 @@
 // Name     : 抖音视频分享
-// Version  : 0.0.1
+// Version  : 0.0.2
 // Author   : LisonFan
 // Home     : https://github.com/LisonFan/JSBox-Script/
 
@@ -7,20 +7,7 @@ main()
 
 function main() {
     var douyin_url = $clipboard.link
-    if (isDouYinURL(douyin_url) > 0) {
-        $ui.loading("处理中...")
-        getDouYinVideoDownloadURL(douyin_url)
-    } else {
-        $ui.alert({
-            title: "错误",
-            message: "传入的链接不是抖音的链接！",
-        })
-    }
-}
-
-function isDouYinURL(url) {
-    var douyin_url = /www.douyin.com/
-    return douyin_url.test(url)
+    getDouYinVideoDownloadURL(douyin_url)
 }
 
 function getDouYinVideoDownloadURL(url) {
@@ -31,8 +18,15 @@ function getDouYinVideoDownloadURL(url) {
             if (data) {
                 var regx = /(?=video_id\=)[^"]+/gi
                 var douyin_video_id = regx.exec(data)[0].split("\\")[0]
-                var douyin_video_download_url = "https://aweme.snssdk.com/aweme/v1/play/?" + douyin_video_id
-                shareDouYinVideo(douyin_video_download_url)
+                if (douyin_video_id) {
+                    var douyin_video_download_url = "https://aweme.snssdk.com/aweme/v1/play/?" + douyin_video_id
+                    shareDouYinVideo(douyin_video_download_url)
+                } else {
+                    $ui.alert({
+                        title: "错误",
+                        message: "解析失败",
+                    })
+                }
             } else {
                 $ui.alert({
                     title: "错误",
