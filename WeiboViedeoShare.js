@@ -1,5 +1,5 @@
 /**
- * Version          : 0.0.2
+ * Version          : 0.0.3
  * Author           : LisonFan
  * Home             : https://github.com/LisonFan/JSBox-Script
  * Support List     : 微博视频、秒拍
@@ -192,28 +192,44 @@ function resolveVideoDownloadURL(url) {
             handler: function (resp) {
                 var data = resp.data
                 if (data) {
-                    var regx = /(stream_url_hd)(.)+/g
-                    var video_url_regx = regx.exec(data)
-                    if (video_url_regx) {
-                        var video_url = video_url_regx[0].split("\"")[2]
-                        if (video_url.indexOf("http://") > -1 || video_url.indexOf("https://") > -1) {
-                            downloadVideo(video_url)
-                        } else {
-                            $ui.loading(false)
-                            $ui.alert({
-                                title: "错误",
-                                message: "找不到视频链接",
-                            })
-                            return
+                    var stream_url = /(stream_url)(.)+/g
+                    var stream_url_hd = /(stream_url_hd)(.)+/g
+                    var stream_url_regx = stream_url.exec(data)
+                    var stream_url_hd_regx = stream_url_hd.exec(data)
+
+                    if (stream_url_hd_regx) {
+                        var hd_video_url = stream_url_hd_regx[0].split("\"")[2]
+                        if (hd_video_url) {
+                            if (hd_video_url.indexOf("http://") > -1 || hd_video_url.indexOf("https://") > -1) {
+                                downloadVideo(hd_video_url)
+                                return
+                            } else {
+                                $ui.loading(false)
+                                $ui.alert({
+                                    title: "错误",
+                                    message: "找不到视频链接",
+                                })
+                                return
+                            }
                         }
-                    } else {
-                        $ui.loading(false)
-                        $ui.alert({
-                            title: "错误",
-                            message: "找不到视频链接",
-                        })
-                        return
-                    }                    
+                    }
+
+                    if (stream_url_regx) {
+                        var video_url = stream_url_regx[0].split("\"")[2]
+                        if (video_url) {
+                            if (video_url.indexOf("http://") > -1 || video_url.indexOf("https://") > -1) {
+                                downloadVideo(video_url)
+                                return
+                            } else {
+                                $ui.loading(false)
+                                $ui.alert({
+                                    title: "错误",
+                                    message: "找不到视频链接",
+                                })
+                                return
+                            }
+                        }
+                    }
                 } else {
                     $ui.loading(false)
                     $ui.alert({
